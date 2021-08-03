@@ -1,26 +1,38 @@
 import java.util.*;
 
-public class MyApplication {
+public class AppContainer {
 
     Garden myGarden = new Garden();
 
     public static void main(String[] args) {
-        System.out.println("from MyApplication");
-        MyApplication app = new MyApplication();
+        System.out.println("from AppContainer");
+        AppContainer app = new AppContainer();
         app.createGarden();
         app.printConfig();
     }
 
     public void createGarden() {
         myGarden.addSegment("Red", 5, 5, 20, 40);
-        myGarden.addSegment("Green", 3, 5, 30, 40);
         myGarden.addSegment("Blue", 2, 5, 25, 40);
+        myGarden.addSegment("Green", 3, 5, 30, 40);
+        
     }
 
     public void printConfig(){
         myGarden.printSegmentNames();
     }
     
+    public void addWater(String segmentColor, int planter){
+        
+    }
+
+    public void printPlantListToBeWatered(){
+
+    }
+
+    public void setHumidity(String segmentColor, int planter, int humidity){
+
+    }
 }
 
 class Gardner {
@@ -28,8 +40,8 @@ class Gardner {
 }
 
 class Garden {
-    List<GardenSegment> gSegments = new ArrayList<GardenSegment>();
 
+    List<GardenSegment> gSegments = new ArrayList<GardenSegment>();
     public void addSegment(String segmentName, int nPlanters, int maxPlants, int lowThreshold, int highThreshold) {
         gSegments.add(new GardenSegment(segmentName, nPlanters, maxPlants, lowThreshold, highThreshold));
     }
