@@ -46,12 +46,15 @@ class Garden {
         gSegments.add(new GardenSegment(segmentName, nPlanters, maxPlants, lowThreshold, highThreshold));
     }
     public void printSegmentNames(){
-        for (int i = 0; i < gSegments.size(); i++) 
+        for (int i = 0; i < gSegments.size(); i++){
             gSegments.get(i).printConfig();  
+            gSegments.get(i).addPlants(gSegments.get(i).mNplants);
+        }
     }
 }
 
 class Planter {
+    
 
 }
 
@@ -80,6 +83,11 @@ class GardenSegment {
         System.out.println(mmaxPlants);
         System.out.println(mlowThreshold);
         System.out.println(mhighThreshold);
+    }
+
+    public void addPlants(int plants){
+    
+
     }
 }
 // make a collection
