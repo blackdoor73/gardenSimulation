@@ -27,6 +27,17 @@ public class AppContainer {
     }
 
     public void printPlantListToBeWatered(){
+        
+        /*
+        1 ask garden to give me  the list to be watered
+        2 now gaden will go to each segment ast to be return planter
+        3 segment go to each planter and ask to each water
+        */
+        List<Planter> planters = myGarden.getPlantListToWatered();
+        for (int i = 0; i < planters.size(); i++){
+            planters.get(i).printStatus();  
+        }
+
 
     }
 
@@ -51,10 +62,16 @@ class Garden {
             gSegments.get(i).addPlants(gSegments.get(i).mNplants);
         }
     }
+    public List<Planter> getPlantListToWatered(){
+        List<Planter> PlantList = new ArrayList<Planter>();
+        return PlantList;
+    }
 }
 
 class Planter {
-    
+    public void printStatus(){
+        
+    }    
 
 }
 
