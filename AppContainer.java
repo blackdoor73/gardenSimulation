@@ -9,6 +9,7 @@ public class AppContainer {
         AppContainer app = new AppContainer();
         app.createGarden();
         app.printConfig();
+        app.printPlantListToBeWatered();
     }
 
     public void createGarden() {
@@ -35,6 +36,7 @@ public class AppContainer {
          */
         List<Planter> planters = myGarden.getPlantListToWatered();
         for (int i = 0; i < planters.size(); i++) {
+            
             planters.get(i).printStatus();
         }
 
@@ -65,6 +67,9 @@ class Garden {
 
     public List<Planter> getPlantListToWatered() {
         List<Planter> PlantList = new ArrayList<Planter>();
+        for (int i = 0; i < gSegments.size(); i++) {
+            PlantList.add((Planter) gSegments.get(i).getPlantListToWatered());
+        }
         return PlantList;
     }
 }
@@ -72,28 +77,49 @@ class Garden {
 class Planter {
     int highThreshold;
     int lowThreshold;
+    int humidity;
+    String segment;
+    int id;
 
-    Planter(int mlowThreshold, int mhighThreshold) {
+    Planter(int mlowThreshold, int mhighThreshold, String mSegment, int mId) {
         highThreshold = mhighThreshold;
         lowThreshold = mlowThreshold;
+        humidity = lowThreshold;
+        segment = mSegment;
+        id = mId;
     }
 
-    public void printStatus() {
-        
+    public void addWater()
+    {
+        humidity++;
     }
 
+    boolean isWaterNeeded()
+    {
+        if( humidity < lowThreshold )
+            return true;
+        return false;
+    }
+    public void reduceHumidity()
+    {
+        if ( humidity > 0 )
+            humidity--;
+    }
+
+    void printStatus()
+    {
+        System.out.println( segment + "," + id + "," + isWaterNeeded());
+    }
 }
 
-class HumiditySensor {
-
-}
 
 class GardenSegment {
-    String msegmentName;
-    int mNplants;
-    int mmaxPlants;
-    int mlowThreshold;
-    int mhighThreshold;
+    private String msegmentName;
+    private int mNplants;
+    private int mmaxPlants;
+    private int mlowThreshold;
+    private int mhighThreshold;
+    private List<Planter> plantsList = new ArrayList<Planter>();
 
     GardenSegment(String segmentName, int nPlanters, int maxPlants, int lowThreshold, int highThreshold) {
         msegmentName = segmentName;
@@ -112,17 +138,16 @@ class GardenSegment {
         System.out.println(mhighThreshold);
     }
 
-    List<Planter> createPlantsList = new ArrayList<Planter>();
 
     public void addPlants(int plants, int maxPlants) {
-        if (plants > maxPlants) {
-            for (int i = 0; i < maxPlants; i++)
-                createPlantsList.add(new Planter(mlowThreshold, mhighThreshold));
-
-        } else
-            for (int i = 0; i < plants; i++)
-                createPlantsList.add(new Planter(mlowThreshold, mhighThreshold));
-
+        plants = plants > maxPlants? maxPlants : plants;
+        for (int i = 0; i < plants; i++)
+         plantsList.add(new Planter(mlowThreshold, mhighThreshold, msegmentName, i));
+    }
+    
+    public List<Planter> getPlantListToWatered() {
+        
+        return    plantsList;
     }
 
 }
