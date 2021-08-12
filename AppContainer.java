@@ -1,3 +1,10 @@
+// Menu
+//      Set (Reduce) Humidity [Natural Cause]
+//      Water Plant (Increase Humidity)
+//      Print List of Plants to water
+//      Exit
+
+
 import java.util.*;
 
 public class AppContainer {
@@ -36,7 +43,7 @@ public class AppContainer {
          */
         List<Planter> planters = myGarden.getPlantListToWatered();
         for (int i = 0; i < planters.size(); i++) {
-            
+
             planters.get(i).printStatus();
         }
 
@@ -53,13 +60,14 @@ class Gardner {
 
 class Garden {
 
-    List<GardenSegment> gSegments = new ArrayList<GardenSegment>();
+    private List<GardenSegment> gSegments = new ArrayList<GardenSegment>();
 
     public void addSegment(String segmentName, int nPlanters, int maxPlants, int lowThreshold, int highThreshold) {
         gSegments.add(new GardenSegment(segmentName, nPlanters, maxPlants, lowThreshold, highThreshold));
     }
 
     public void printSegmentNames() {
+        System.out.println("Class:Garden|Function:printSegmentNames");
         for (int i = 0; i < gSegments.size(); i++) {
             gSegments.get(i).printConfig();
         }
@@ -67,9 +75,13 @@ class Garden {
 
     public List<Planter> getPlantListToWatered() {
         List<Planter> PlantList = new ArrayList<Planter>();
+
         for (int i = 0; i < gSegments.size(); i++) {
-            PlantList.add((Planter) gSegments.get(i).getPlantListToWatered());
+            List<Planter> segPlants = gSegments.get(i).getPlantListToWatered();
+            for (int j = 0; j < segPlants.size(); j++)
+                PlantList.add(segPlants.get(j));
         }
+
         return PlantList;
     }
 }
@@ -89,29 +101,25 @@ class Planter {
         id = mId;
     }
 
-    public void addWater()
-    {
+    public void addWater() {
         humidity++;
     }
 
-    boolean isWaterNeeded()
-    {
-        if( humidity < lowThreshold )
+    boolean isWaterNeeded() {
+        if (humidity < lowThreshold)
             return true;
         return false;
     }
-    public void reduceHumidity()
-    {
-        if ( humidity > 0 )
+
+    public void reduceHumidity() {
+        if (humidity > 0)
             humidity--;
     }
 
-    void printStatus()
-    {
-        System.out.println( segment + "," + id + "," + isWaterNeeded());
+    void printStatus() {
+        System.out.println(segment + "," + id + "," + isWaterNeeded());
     }
 }
-
 
 class GardenSegment {
     private String msegmentName;
@@ -138,20 +146,15 @@ class GardenSegment {
         System.out.println(mhighThreshold);
     }
 
-
     public void addPlants(int plants, int maxPlants) {
-        plants = plants > maxPlants? maxPlants : plants;
+        plants = plants > maxPlants ? maxPlants : plants;
         for (int i = 0; i < plants; i++)
-         plantsList.add(new Planter(mlowThreshold, mhighThreshold, msegmentName, i));
+            plantsList.add(new Planter(mlowThreshold, mhighThreshold, msegmentName, i));
     }
-    
+
     public List<Planter> getPlantListToWatered() {
-        
-        return    plantsList;
+
+        return plantsList;
     }
 
 }
-
-// make a collection
-// add new segemnts
-// print segmentConfig
